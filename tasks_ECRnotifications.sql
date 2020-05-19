@@ -1,14 +1,17 @@
 --Sample code for Pivot Operator: https://forum.solidworks.com/thread/199213
 
-select DocumentID, LatestRevisionNo as Ver, left(Filename, len(FileName) - charindex('.', reverse([FileName]))), Status, convert(varchar, StartTime, 101) as Start_Date,
 
-
-    [ECR_CorrectiveAction] as Corrective_Action,
+select DocumentID, LatestRevisionNo as Ver, left(Filename, len(FileName) - charindex('.', reverse([FileName]))) as ECRnumber, Status, convert(varchar, StartTime, 101) as Start_Date,
+    
+	[ECR_CorrectiveAction] as Corrective_Action,
     [ECR_Author] as Author,
     [ECR_Approver00] as ENG_Appvr,
     [ECR_Approver_CAD] as CAD_Appvr,
-    [ECR_AppvlDateCAD] as Release_Date
-
+	[ECR_AppvlDateCAD]as Release_Date,
+   
+	CASE
+		WHEN isnull(convert(varchar,[ECR_AppvlDateCAD],101),'') = '' then CONVERT(VarChar, GETDATE(), 101)
+	END as CurrentDate
 
 from (
         select d.DocumentID, d.filename, vv.valuetext, v.variablename, s.Name as Status, d.LatestRevisionNo, p.StartTime
@@ -39,7 +42,3 @@ PIVOT
                         )
 )pivot_table
 order by filename desc
-
-select * from Variable v
-where v.VariableName like 'ECR_%'
-and v.VariableName like '%date%'
