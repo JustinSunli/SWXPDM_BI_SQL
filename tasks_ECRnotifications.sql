@@ -8,6 +8,8 @@ select DocumentID, LatestRevisionNo as Ver, left(Filename, len(FileName) - chari
     [ECR_Approver00] as ENG_Appvr,
     [ECR_Approver_CAD] as CAD_Appvr,
 	[ECR_AppvlDateCAD]as Release_Date,
+	[Division] as divion,
+	[Department] as Department,
    
 	CASE
 		WHEN isnull(convert(varchar,[ECR_AppvlDateCAD],101),'') = '' then CONVERT(VarChar, GETDATE(), 101)
@@ -38,7 +40,9 @@ PIVOT
                             [ECR_Approver00],
                             [ECR_Approver_CAD],
                             [ECR_CorrectiveAction],
-                            [ECR_AppvlDateCAD]
+                            [ECR_AppvlDateCAD],
+							[Division],
+							[department]
                         )
 )pivot_table
 order by filename desc
