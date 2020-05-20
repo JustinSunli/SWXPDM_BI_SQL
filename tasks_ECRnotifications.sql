@@ -18,15 +18,11 @@ select DocumentID, LatestRevisionNo as Ver, left(Filename, len(FileName) - chari
 from (
         select d.DocumentID, d.filename, vv.valuetext, v.variablename, s.Name as Status, d.LatestRevisionNo, p.StartTime
 
-        from TaskInstances ti
-            inner join tasks t on ti.TaskID = t.TaskID --Get task name
-            inner join TaskSelection ts on ti.TaskInstanceID = ts.TaskInstanceID --get Docuements processed and version
-            inner join Documents d on ts.DocumentID = d.DocumentID --Get Document name
+        from Documents d
             inner join Status s on d.CurrentStatusID = s.StatusID
             inner join  VariableValue vv on d.DocumentID = vv.DocumentID
             inner join Variable v on vv.VariableID  = v.VariableID
-
-            inner join DocumentsInProjects dp on d.DocumentID = dp.DocumentID --Get start of ECR
+            inner join DocumentsInProjects dp on d.DocumentID = dp.DocumentID --Get ECR start Date
             inner join Projects p on dp.ProjectID = p.ProjectID
 
             where Filename LIKE 'ECR-%.xml'
