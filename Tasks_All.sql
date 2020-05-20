@@ -1,7 +1,12 @@
 --Date Time conversion: https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql?view=sql-server-ver15
 
-select ti.TaskID ,ti.TaskInstanceID ,ti.InitUserID ,u.FullName as Initiated ,t.TaskName ,d.Filename ,d.DocumentID
-,CONVERT(varchar, DATEADD(mi, datediff(mi, getutcdate(), getdate()), ti.endtime),22) as TimeStamp
+select ti.TaskID,
+	   ti.TaskInstanceID,
+	   ti.InitUserID,
+	   u.FullName as Initiated,
+	   t.TaskName,d.Filename,
+	   d.DocumentID,
+	   CONVERT(varchar, DATEADD(mi, datediff(mi, getutcdate(), getdate()), ti.endtime),22) as TimeStamp
 ,CASE
 	when ti.TaskStatus = 6 then 'Cancel'
 	when ti.TaskStatus = 7 then 'Success'

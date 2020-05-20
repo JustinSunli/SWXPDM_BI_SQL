@@ -3,6 +3,7 @@
 select DocumentID, 
 	   LatestRevisionNo as Ver,
 	   left(Filename, len(FileName) - charindex('.', reverse([FileName]))) as ECRnumber, Status, convert(varchar, StartTime, 101) as Start_Date,
+	   [Description] as Description,
 	   [ECR_CorrectiveAction] as Corrective_Action,
        [ECR_Author] as Author,
        [ECR_Approver00] as ENG_Appvr,
@@ -37,7 +38,8 @@ PIVOT
 (
     Max(ValueText)
     for variablename in (
-                            [ECR_Author],
+							[Description],
+						    [ECR_Author],
                             [ECR_Approver00],
                             [ECR_Approver_CAD],
                             [ECR_CorrectiveAction],
