@@ -2,7 +2,9 @@
 
 select DocumentID, 
 	   LatestRevisionNo as Ver,
-	   left(Filename, len(FileName) - charindex('.', reverse([FileName]))) as ECRnumber, Status, convert(varchar, StartTime, 101) as Start_Date,
+	   left(Filename, len(FileName) - charindex('.', reverse([FileName]))) as ECRnumber,
+       Status,
+       convert(varchar, StartTime, 101) as Start_date,
 	   [Description] as Description,
 	   [ECR_CorrectiveAction] as Corrective_Action,
        [ECR_Author] as Author,
@@ -13,8 +15,9 @@ select DocumentID,
 	   [Department] as Department,
 
 		CASE
-			WHEN isnull(convert(varchar,[ECR_AppvlDateCAD],101),'') = '' then CONVERT(VarChar, GETDATE(), 101)
-		END as CurrentDate
+			WHEN isnull([ECR_AppvlDateCAD],'') = '' then datediff(day, StartTime, getdate())
+		    else datediff(day, StartTime, [ECR_AppvlDateCAD] )
+		END as Durration
 
 from (select d.DocumentID, 
 			 d.filename,
