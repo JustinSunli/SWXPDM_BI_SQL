@@ -10,13 +10,15 @@ select DocumentID,
        [ECR_Author] as Author,
        [ECR_Approver00] as ENG_Appvr,
        [ECR_Approver_CAD] as CAD_Appvr,
-	   [ECR_AppvlDateCAD]as Release_Date,
-	   [Division] as divion,
+	   [ECR_AppvlDateCAD] as Release_Date,
+	   [Division] as Divion,
 	   [Department] as Department,
+	   len([ECR_RootCause])as RootCause,
+	   len([ECR_ProposedChanges]) as Proposed_Change,
 
 		CASE
 			WHEN isnull([ECR_AppvlDateCAD],'') = '' then datediff(day, StartTime, getdate())
-		    else datediff(day, StartTime, [ECR_AppvlDateCAD] )
+		    else datediff(day, StartTime, [ECR_AppvlDateCAD])
 		END as Durration
 
 from (select d.DocumentID, 
@@ -48,7 +50,9 @@ PIVOT
                             [ECR_CorrectiveAction],
                             [ECR_AppvlDateCAD],
 							[Division],
-							[department]
+							[department],
+							[ECR_RootCause],
+							[ECR_ProposedChanges]
                         )
 )pivot_table
 order by filename desc
