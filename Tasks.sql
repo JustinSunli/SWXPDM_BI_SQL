@@ -2,7 +2,7 @@
 
 select ti.TaskID,
 	   ti.TaskInstanceID,
-	   ti.InitUserID,
+	   ti.InitUserID as UserID,
 	   u.FullName as Initiated,
 	   t.TaskName,d.Filename,
 	   d.DocumentID,
