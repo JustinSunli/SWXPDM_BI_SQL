@@ -14,9 +14,10 @@ select DocumentID,
 	   [ECR_AppvlDateCAD] as Release_Date,
 	   [Division] as Divion,
 	   [Department] as Department,
-	   len([ECR_RootCause])as Char_RootCause,
-	   len([ECR_ProposedChanges]) as Char_ProposedChange,
 	   len([ECR_RootCause]) +  len([ECR_ProposedChanges]) as ECR_Quality,
+       [ECR_RootCause],
+       [ECR_ProposedChanges],
+
 
 		CASE
 			WHEN isnull([ECR_AppvlDateCAD],'') = '' then datediff(day, StartTime, getdate())
